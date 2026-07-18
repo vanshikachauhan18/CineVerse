@@ -1,66 +1,91 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { getMovieById } from "../services/movieService";
-import { addReview,getReviews } from "../services/reviewService";
+import { addReview, getReviews, deleteReview } from "../services/reviewService";
+
 import "./MovieDetails.css";
+
 
 function MovieDetails() {
 
   const { id } = useParams();
-  
+
 
   const [movie, setMovie] = useState(null);
 
   const [review, setReview] = useState("");
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
 
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
     fetchMovie(),
-    fetchReviews();
+      fetchReviews();
   }, [id]);
-   
-const handleReviewSubmit = async () => {
 
-  if (!review.trim()) {
-    alert("Please write a review.");
-    return;
-  }
+  const handleReviewSubmit = async () => {
 
-  try {
+    if (!review.trim()) {
+      alert("Please write a review.");
+      return;
+    }
+    if (rating === 0) {
+      toast.error("Please select a rating.");
+      return;
+    }
 
-    await addReview(movie._id, {
-      rating,
-      review,
-    });
+    try {
 
-    alert("Review added successfully!");
+      await addReview(movie._id, {
+        rating,
+        review,
+      });
 
-    setReview("");
-    setRating(5);
-    fetchReviews();
+      toast.success("Review added successfully!");
 
-  } catch (err) {
+      setReview("");
+      setRating(5);
+      fetchReviews();
 
-    alert(err.response?.data?.message || "Failed to add review");
+    } catch (err) {
 
-  }
-};
+      toast.error(err.response?.data?.message || "Failed to add review");
+    }
+  };
   const fetchReviews = async () => {
 
-  try {
+    try {
 
-    const res = await getReviews(id);
+      const res = await getReviews(id);
 
-    setReviews(res.data);
+      setReviews(res.data);
 
-  } catch (err) {
+    } catch (err) {
 
-    console.log(err);
+      console.log(err);
 
-  }
+    }
 
-};
+  };
+  const handleDeleteReview = async (reviewId) => {
+
+    try {
+
+      await deleteReview(reviewId);
+
+      toast.success("Review deleted successfully!");
+
+      fetchReviews();
+
+    } catch (err) {
+
+      toast.error(
+        err.response?.data?.message || "Failed to delete review"
+      );
+
+    }
+
+  };
   const fetchMovie = async () => {
 
     try {
@@ -80,102 +105,116 @@ const handleReviewSubmit = async () => {
   if (!movie) {
     return <h2>Loading...</h2>;
   }
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
-  
   return (
-  <div className="movie-details">
+    <>
+      <div className="movie-details">
 
-    <div className="movie-poster">
-      <img src={movie.poster} alt={movie.title} />
-    </div>
+        <div className="movie-poster">
+          <img src={movie.poster} alt={movie.title} />
+        </div>
 
-    <div className="movie-info">
+        <div className="movie-info">
 
-      <h1>{movie.title}</h1>
+          <h1>{movie.title}</h1>
 
-      <p>
-        <strong>Genre:</strong> {movie.genre}
-      </p>
+          <p>
+            <strong>Genre:</strong> {movie.genre}
+          </p>
 
-      <p>
-        <strong>Release Year:</strong> {movie.releaseYear}
-      </p>
+          <p>
+            <strong>Release Year:</strong> {movie.releaseYear}
+          </p>
 
-      <p className="movie-description">
-        {movie.description}
-      </p>
+          <p className="movie-description">
+            {movie.description}
+          </p>
 
-      <div className="movie-rating">
-        ⭐⭐⭐⭐⭐
-      </div>
+          <div className="movie-rating">
+            ⭐⭐⭐⭐⭐
+          </div>
 
-      <div className="review-section">
+          <div className="review-section">
 
-      <h3>Write a Review</h3>
+            <h3>Write a Review</h3>
 
-      <select
-        value={rating}
-        onChange={(e) => setRating(Number(e.target.value))}
-      >
-      <option value={1}>⭐ 1</option>
-      <option value={2}>⭐⭐ 2</option>
-      <option value={3}>⭐⭐⭐ 3</option>
-      <option value={4}>⭐⭐⭐⭐ 4</option>
-      <option value={5}>⭐⭐⭐⭐⭐ 5</option>
-     </select>
+            <div className="star-rating">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`star ${star <= rating ? "active" : ""}`}
+                  onClick={() => setRating(star)}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
 
-     <textarea
-    placeholder="Write your review..."
-    value={review}
-    onChange={(e) => setReview(e.target.value)}
-    rows="5"
-  />
+            <textarea
+              placeholder="Write your review..."
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+              rows="5"
+            />
 
-  <button
-  className="review-btn"
-  onClick={handleReviewSubmit}
-  >
-  Submit Review
- </button>
+            <button
+              className="review-btn"
+              onClick={handleReviewSubmit}
+            >
+              Submit Review
+            </button>
 
-</div>
+          </div>
 
-    </div>
-    <div className="reviews-list">
-
-  <h2>User Reviews</h2>
-
-  {reviews.length === 0 ? (
-
-    <p>No reviews yet.</p>
-
-  ) : (
-
-    reviews.map((item) => (
-
-      <div className="review-card" key={item._id}>
-
-        <h3>
-          {item.user?.userName || "Anonymous"}
-        </h3>
-
-        <p className="stars">
-          {"⭐".repeat(item.rating)}
-        </p>
-
-        <p>
-          {item.review}
-        </p>
+        </div>
 
       </div>
 
-    ))
+      <div className="reviews-list">
 
-  )}
+        <h2>User Reviews</h2>
 
-  </div> 
-  </div>
-);
+        {reviews.length === 0 ? (
+
+          <p>No reviews yet.</p>
+
+        ) : (
+
+          reviews.map((item) => (
+
+            <div className="review-card" key={item._id}>
+
+              <h3>
+                {item.user?.userName || "Anonymous"}
+              </h3>
+
+              <p className="stars">
+                {"⭐".repeat(item.rating)}
+              </p>
+
+              <p>
+                {item.review}
+              </p>
+
+              {currentUser?.id === item.user?._id && (
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDeleteReview(item._id)}
+                >
+                  🗑 Delete Review
+                </button>
+              )}
+            </div>
+
+          ))
+
+        )}
+
+      </div>
+
+    </>
+  );
 
 }
 

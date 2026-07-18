@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
+import toast from "react-hot-toast";
 import "./auth.css";
 
 function Login() {
@@ -26,7 +27,7 @@ function Login() {
       JSON.stringify(res.data.user)
 );
 
-    alert(res.data.message);
+    toast.success(res.data.message);
 
     console.log(res.data.user);
 
@@ -37,7 +38,9 @@ function Login() {
     navigate("/");
     
   } catch (err) {
-      alert(err.response?.data?.message || "Something went wrong");
+      toast.error(
+        err.response?.data?.message || "Something went wrong"
+      );
     }
   };
 

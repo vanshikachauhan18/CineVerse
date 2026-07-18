@@ -21,3 +21,15 @@ export const getReviews = async (movieId) => {
   return await axios.get(`${API}/${movieId}`);
 
 };
+export const deleteReview = async (reviewId) => {
+  const token = localStorage.getItem("token");
+
+  return axios.delete(
+    `http://localhost:5000/api/reviews/${reviewId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
