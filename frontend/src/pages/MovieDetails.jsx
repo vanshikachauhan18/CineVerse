@@ -115,6 +115,10 @@ function MovieDetails() {
         reviews.length
       ).toFixed(1)
       : 0;
+  const ratingStats = [5, 4, 3, 2, 1].map((star) => ({
+    star,
+    count: reviews.filter((review) => review.rating === star).length,
+  }));
 
   return (
     <>
@@ -133,6 +137,15 @@ function MovieDetails() {
             <span className="review-count">
               ({reviews.length} Reviews)
             </span>
+          </div>
+
+          <div className="rating-stats">
+            {ratingStats.map((item) => (
+              <div key={item.star} className="rating-row">
+                <span>{"⭐".repeat(item.star)}</span>
+                <span>{item.count}</span>
+              </div>
+            ))}
           </div>
 
           <div className="movie-meta">
