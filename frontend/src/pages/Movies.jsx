@@ -29,8 +29,11 @@ function Movies() {
   return (
     <div className="movies-page">
 
-      <h1>🎬 All Movies</h1>
+      <h1>🎬 Explore Movies</h1>
 
+      <p>
+        Discover, review and explore your favourite movies.
+      </p>
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
