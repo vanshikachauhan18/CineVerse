@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getMovieById } from "../services/movieService";
 import { addReview, getReviews, deleteReview } from "../services/reviewService";
+import StarRating from "../components/StarRating";
 
 import "./MovieDetails.css";
 
@@ -37,14 +38,14 @@ function MovieDetails() {
     try {
 
       await addReview(movie._id, {
-        rating,
+        rating: Number(rating),
         review,
       });
 
       toast.success("Review added successfully!");
 
       setReview("");
-      setRating(5);
+      setRating(0);
       fetchReviews();
 
     } catch (err) {
@@ -107,6 +108,14 @@ function MovieDetails() {
   }
   const currentUser = JSON.parse(localStorage.getItem("user"));
 
+  const averageRating =
+    reviews.length > 0
+      ? (
+        reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviews.length
+      ).toFixed(1)
+      : 0;
+
   return (
     <>
       <div className="movie-details">
@@ -117,39 +126,39 @@ function MovieDetails() {
 
         <div className="movie-info">
 
-          <h1>{movie.title}</h1>
+          <h1 className="movie-title">{movie.title}</h1>
 
-          <p>
-            <strong>Genre:</strong> {movie.genre}
-          </p>
+          <div className="movie-rating">
+            ⭐ {averageRating}
+            <span className="review-count">
+              ({reviews.length} Reviews)
+            </span>
+          </div>
 
-          <p>
-            <strong>Release Year:</strong> {movie.releaseYear}
-          </p>
+          <div className="movie-meta">
+
+            <span className="genre-badge">
+              🎭 {movie.genre}
+            </span>
+
+            <span className="year-badge">
+              📅 {movie.releaseYear}
+            </span>
+
+          </div>
 
           <p className="movie-description">
             {movie.description}
           </p>
 
-          <div className="movie-rating">
-            ⭐⭐⭐⭐⭐
-          </div>
-
           <div className="review-section">
 
             <h3>Write a Review</h3>
 
-            <div className="star-rating">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  className={`star ${star <= rating ? "active" : ""}`}
-                  onClick={() => setRating(star)}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
+            <StarRating
+              rating={rating}
+              setRating={setRating}
+            />
 
             <textarea
               placeholder="Write your review..."

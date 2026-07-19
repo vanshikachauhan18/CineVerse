@@ -1,16 +1,24 @@
 .movie-details {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 50px auto;
   display: flex;
   gap: 50px;
   align-items: flex-start;
   padding: 20px;
+  background: #111827;
+  border-radius: 20px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, .4);
 }
 
 .movie-poster img {
-  width: 320px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  width: 340px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .45);
+  transition: .35s;
+}
+
+.movie-poster img:hover {
+  transform: scale(1.03);
 }
 
 .movie-info {
@@ -106,45 +114,94 @@
 }
 
 .review-card {
-  background: #1f2937;
+  background: #fff;
+  border-radius: 16px;
   padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  transition: .3s;
+  margin: 20px 0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+  transition: all .3s ease;
 }
 
 .review-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, .15);
 }
 
 .review-card h3 {
-  color: #f97316;
-  margin-bottom: 10px;
+  margin: 0;
+  font-size: 22px;
+  color: #222;
 }
 
 .review-card p {
-  color: #d1d5db;
   line-height: 1.7;
+  color: #555;
 }
 
 .stars {
-  color: gold;
-  font-size: 20px;
-  margin: 10px 0;
-}
-.delete-btn{
-    margin-top:15px;
-    padding:10px 18px;
-    border:none;
-    border-radius:8px;
-    background:#dc2626;
-    color:white;
-    font-size:15px;
-    cursor:pointer;
-    transition:0.3s;
+  color: #FFD700;
+  font-size: 22px;
+  margin: 12px 0;
 }
 
-.delete-btn:hover{
-    background:#b91c1c;
-    transform:scale(1.05);
+.delete-btn {
+  margin-top: 18px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #e74c3c;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  transition: .3s;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}
+
+.movie-rating {
+  font-size: 28px;
+  font-weight: bold;
+  color: #FFD700;
+  margin: 20px 0;
+}
+
+.review-count {
+  font-size: 16px;
+  color: #999;
+  margin-left: 10px;
+}
+
+.movie-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.movie-meta {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.genre-badge,
+.year-badge {
+  background: #1e293b;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.genre-badge {
+  border: 1px solid #3b82f6;
+}
+
+.year-badge {
+  border: 1px solid #facc15;
 }
