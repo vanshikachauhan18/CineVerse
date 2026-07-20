@@ -16,3 +16,9 @@ export const getMovieById = async (id) => {
 export const addMovie = async (movieData) => {
   return await axios.post(API, movieData);
 };
+
+export const searchMovie = async (title, year) => {
+  return await axios.get(
+    `http://localhost:5000/api/omdb/search?title=${title}&year=${year}`
+  );
+};

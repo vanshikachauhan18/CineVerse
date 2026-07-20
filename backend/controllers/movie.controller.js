@@ -3,12 +3,22 @@ import { Movie } from "../models/movie.model.js";
 // Add Movie
 export const addMovie = async (req, res) => {
   try {
-    const { title, description, genre, releaseYear, poster } = req.body;
+    const {
+      title,
+      description,
+      genre,
+      releaseYear,
+      poster,
+      imdbRating,
+      runtime,
+    } = req.body;
 
-    // Validation
-    if (!title || !description || !genre || !releaseYear) {
+    // Prevent duplicate movies
+    const existingMovie = await Movie.findOne({ title, releaseYear });
+
+    if (existingMovie) {
       return res.status(400).json({
-        message: "Please fill all required fields",
+        message: "Movie already exists.",
       });
     }
 
@@ -18,15 +28,19 @@ export const addMovie = async (req, res) => {
       genre,
       releaseYear,
       poster,
+      imdbRating,
+      runtime,
     });
 
     res.status(201).json({
+      success: true,
       message: "Movie added successfully",
       movie,
     });
 
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }

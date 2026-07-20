@@ -1,138 +1,86 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { addMovie } from "../services/movieService";
-import "./AddMovie.css";
+import { searchMovie, addMovie } from "../services/movieService";
 
 function AddMovie() {
-  const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [year, setYear] = useState("");
+  const [movie, setMovie] = useState(null);
 
-  const [movie, setMovie] = useState({
-    title: "",
-    genre: "",
-    releaseYear: "",
-    poster: "",
-    description: "",
-  });
-
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setMovie({
-      ...movie,
-      [e.target.name]: e.target.value,
-    });
+  const handleSearch = async () => {
+    try {
+      const res = await searchMovie(title, year);
+      setMovie(res.data);
+    } catch (err) {
+      toast.error("Movie not found");
+    }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      !movie.title ||
-      !movie.genre ||
-      !movie.releaseYear ||
-      !movie.description
-    ) {
-      toast.error("Please fill all required fields.");
-      return;
-    }
-
+  const handleAddMovie = async () => {
     try {
-      setLoading(true);
-
-      await addMovie(movie);
+      await addMovie({
+        title: movie.Title,
+        description: movie.Plot,
+        genre: movie.Genre,
+        releaseYear: Number(movie.Year),
+        poster: movie.Poster,
+        imdbRating: Number(movie.imdbRating),
+        runtime: movie.Runtime,
+      });
 
       toast.success("Movie added successfully!");
 
-      navigate("/movies");
+      setMovie(null);
+      setTitle("");
+      setYear("");
+
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Failed to add movie."
-      );
-    } finally {
-      setLoading(false);
+      toast.error(err.response?.data?.message || "Failed to add movie");
     }
   };
 
   return (
-    <motion.div
-      className="add-movie-page"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="add-movie-card">
+    <div className="add-movie-page">
+      <h1>Add Movie</h1>
 
-        <h1>🎬 Add New Movie</h1>
+      <input
+        type="text"
+        placeholder="Movie Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
 
-        <p>Add your favourite movie to CineVerse.</p>
+      <input
+        type="number"
+        placeholder="Release Year (Optional)"
+        value={year}
+        onChange={(e) => setYear(e.target.value)}
+      />
 
-        <form onSubmit={handleSubmit}>
+      <button onClick={handleSearch}>
+        Search Movie
+      </button>
 
-          <input
-            type="text"
-            name="title"
-            placeholder="Movie Title"
-            value={movie.title}
-            onChange={handleChange}
-          />
+      {movie && (
+        <div className="movie-preview">
+          <img src={movie.Poster} alt={movie.Title} width="250" />
 
-          <input
-            type="text"
-            name="genre"
-            placeholder="Genre"
-            value={movie.genre}
-            onChange={handleChange}
-          />
+          <h2>{movie.Title}</h2>
 
-          <input
-            type="number"
-            name="releaseYear"
-            placeholder="Release Year"
-            value={movie.releaseYear}
-            onChange={handleChange}
-          />
+          <p>{movie.Genre}</p>
 
-          <input
-            type="text"
-            name="poster"
-            placeholder="Poster URL"
-            value={movie.poster}
-            onChange={handleChange}
-          />
+          <p>⭐ IMDb {movie.imdbRating}</p>
 
-          {movie.poster && (
-            <div className="poster-preview">
-              <img
-                src={movie.poster}
-                alt="Poster Preview"
-                onError={(e) => {
-                  e.target.src = noPoster;
-                }}
-              />
-            </div>
-          )}
+          <p>{movie.Runtime}</p>
 
-          <textarea
-            name="description"
-            placeholder="Movie Description"
-            rows="6"
-            value={movie.description}
-            onChange={handleChange}
-          />
+          <p>{movie.Plot}</p>
 
-          <button
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Adding Movie..." : "➕ Add Movie"}
+          <button onClick={handleAddMovie}>
+            Add to CineVerse
           </button>
-
-        </form>
-
-      </div>
-    </motion.div>
+        </div>
+      )}
+    </div>
   );
 }
 

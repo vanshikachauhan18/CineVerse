@@ -28,6 +28,16 @@ const movieSchema = new mongoose.Schema(
       default: "",
     },
 
+    imdbRating: {
+      type: Number,
+      default: 0,
+    },
+
+    runtime: {
+      type: String,
+      default: "",
+    },
+
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
