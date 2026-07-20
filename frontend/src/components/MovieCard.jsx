@@ -14,6 +14,10 @@ function MovieCard({ movie }) {
           src={movie.poster}
           alt={movie.title}
           className="movie-poster"
+          onError={(e) => {
+            e.target.src =
+              "https://placehold.co/300x450?text=No+Poster";
+          }}
         />
       </div>
 

@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
+import AddMovie from "./pages/AddMovie";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 
@@ -36,6 +37,9 @@ function App() {
         <Route path="/movies" element={<Movies />} />
 
         <Route path="/movie/:id" element={<MovieDetails />} />
+
+        <Route path="/add-movie" element={<AddMovie />} />
+        
       </Routes>
 
       <Footer />
