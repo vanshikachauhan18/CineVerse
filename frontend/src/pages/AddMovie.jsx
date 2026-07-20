@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { searchMovie, addMovie } from "../services/movieService";
+import "./AddMovie.css";
 
 function AddMovie() {
   const [title, setTitle] = useState("");
@@ -40,48 +41,71 @@ function AddMovie() {
   };
 
   return (
-    <div className="add-movie-page">
-      <h1>Add Movie</h1>
+  <div className="add-movie-page">
+    <div className="add-container">
 
-      <input
-        type="text"
-        placeholder="Movie Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <h1>🎬 Add Movie</h1>
 
-      <input
-        type="number"
-        placeholder="Release Year (Optional)"
-        value={year}
-        onChange={(e) => setYear(e.target.value)}
-      />
+      <div className="search-form">
 
-      <button onClick={handleSearch}>
-        Search Movie
-      </button>
+        <input
+          type="text"
+          placeholder="Movie Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <input
+          type="number"
+          placeholder="Year (Optional)"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+        />
+
+        <button onClick={handleSearch}>
+          Search
+        </button>
+
+      </div>
 
       {movie && (
         <div className="movie-preview">
-          <img src={movie.Poster} alt={movie.Title} width="250" />
 
-          <h2>{movie.Title}</h2>
+          <img
+            src={movie.Poster}
+            alt={movie.Title}
+          />
 
-          <p>{movie.Genre}</p>
+          <div className="preview-content">
 
-          <p>⭐ IMDb {movie.imdbRating}</p>
+            <h2>{movie.Title}</h2>
 
-          <p>{movie.Runtime}</p>
+            <p><strong>Genre:</strong> {movie.Genre}</p>
 
-          <p>{movie.Plot}</p>
+            <p><strong>Released:</strong> {movie.Year}</p>
 
-          <button onClick={handleAddMovie}>
-            Add to CineVerse
-          </button>
+            <p><strong>Runtime:</strong> {movie.Runtime}</p>
+
+            <p className="imdb">
+              ⭐ IMDb {movie.imdbRating}
+            </p>
+
+            <p>{movie.Plot}</p>
+
+            <button
+              className="add-btn"
+              onClick={handleAddMovie}
+            >
+              ➕ Add To CineVerse
+            </button>
+
+          </div>
+
         </div>
       )}
-    </div>
-  );
-}
 
+    </div>
+  </div>
+);
+}
 export default AddMovie;
