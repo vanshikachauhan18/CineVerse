@@ -1,26 +1,24 @@
 .movies-page{
     min-height:100vh;
-    background:#0f172a;
-    padding:50px 70px;
+    background:#0b1120;
+    padding:60px 6%;
 }
 
 .movies-page h1{
     color:white;
     font-size:48px;
     text-align:center;
-    margin-bottom:15px;
 }
 
 .movies-page p{
     color:#94a3b8;
     text-align:center;
-    margin-bottom:40px;
-    font-size:18px;
+    margin:15px 0 40px;
 }
 
 .movie-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:35px;
     justify-items:center;
 }
