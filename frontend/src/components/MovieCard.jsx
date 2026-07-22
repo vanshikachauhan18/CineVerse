@@ -7,22 +7,38 @@ import { addToFavorites, removeFromFavorites } from "../services/userService";
 
 import "./MovieCard.css";
 
-function MovieCard({ movie }) {
-  const [favorite, setFavorite] =useState(false);
+function MovieCard({ movie, favorites,
+  setFavorites }) {
+  const favorite = Array.isArray(favorites)
+    ? favorites.includes(movie._id)
+    : false;
 
   const handleFavorite = async () => {
     try {
       if (favorite) {
         await removeFromFavorites(movie._id);
+
+        setFavorites(
+          favorites.filter(id => id !== movie._id)
+        );
+
         toast.success("Removed from Favorites");
       } else {
         await addToFavorites(movie._id);
+
+        setFavorites([
+          ...favorites,
+          movie._id
+        ]);
+
         toast.success("Added to Favorites");
       }
-
-      setFavorite(!favorite);
     } catch (err) {
-      toast.error("Login to use Favorites");
+      console.log(err.response);
+
+      toast.error(
+        err.response?.data?.message || "Something went wrong"
+      );
     }
   };
 

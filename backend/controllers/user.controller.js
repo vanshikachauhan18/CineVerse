@@ -39,17 +39,17 @@ export const toggleFavorite = async (req, res) => {
 
 export const getFavorites = async (req, res) => {
   try {
-
     const user = await User.findById(req.user.id)
       .populate("favorites");
 
-    res.status(200).json(user.favorites);
+    res.status(200).json({
+      success: true,
+      favorites: user.favorites,
+    });
 
   } catch (error) {
-
     res.status(500).json({
       message: error.message,
     });
-
   }
 };

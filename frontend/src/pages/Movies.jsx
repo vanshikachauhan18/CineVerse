@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMovies } from "../services/movieService";
 import MovieCard from "../components/MovieCard";
+import { getFavorites } from "../services/userService";
 import SearchBar from "../components/SearchBar";
 import "./Movies.css";
 
@@ -8,9 +9,11 @@ function Movies() {
 
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     fetchMovies();
+    fetchFavorites();
   }, []);
 
   const fetchMovies = async () => {
@@ -19,6 +22,15 @@ function Movies() {
       setMovies(res.data.movies);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const fetchFavorites = async () => {
+    try {
+      const res = await getFavorites();
+      setFavorites(res.data.favorites);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -47,6 +59,9 @@ function Movies() {
             <MovieCard
               key={movie._id}
               movie={movie}
+              favorites={favorites}
+              setFavorites={setFavorites}
+
             />
           ))
 

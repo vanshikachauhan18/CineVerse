@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
 import AddMovie from "./pages/AddMovie";
+import Favorites from "./pages/Favorites";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 
@@ -39,6 +40,8 @@ function App() {
         <Route path="/movie/:id" element={<MovieDetails />} />
 
         <Route path="/add-movie" element={<AddMovie />} />
+
+        <Route path="/favorites" element={<Favorites />} />
         
       </Routes>
 

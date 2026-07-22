@@ -27,9 +27,13 @@ export const getFavorites = async () => {
 };
 
 export const removeFromFavorites = async (movieId) => {
-  return axios.delete(`${API}/favorites/${movieId}`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
+  return axios.put(
+    `${API}/favorites/${movieId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    }
+  );
 };
