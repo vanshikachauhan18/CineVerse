@@ -44,3 +44,30 @@
 .details-btn:hover{
     background:#ff3a15;
 }
+
+.favorite-btn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    font-size:20px;
+    z-index:10;
+}
+
+.favorite-btn:hover{
+    transform:scale(1.15);
+    color:#ff4b2b;
+}
+
+.movie-card{
+    position:relative;
+}
