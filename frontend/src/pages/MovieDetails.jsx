@@ -122,15 +122,50 @@ function MovieDetails() {
 
   return (
     <>
+      <div
+        className="movie-banner"
+        style={{
+          backgroundImage: `url(${movie.poster})`,
+        }}
+      >
+        <div className="banner-overlay">
+
+          <h1>{movie.title}</h1>
+
+          <div className="banner-rating">
+            ⭐ {averageRating}
+            <span>({reviews.length} Reviews)</span>
+          </div>
+
+          <div className="banner-tags">
+
+            <span>{movie.genre}</span>
+
+            <span>{movie.releaseYear}</span>
+
+          </div>
+
+        </div>
+
+      </div>
       <div className="movie-details">
 
+        {/* LEFT SIDE */}
+
         <div className="movie-poster">
-          <img src={movie.poster} alt={movie.title} />
+          <img
+            src={movie.poster}
+            alt={movie.title}
+          />
         </div>
+
+        {/* RIGHT SIDE */}
 
         <div className="movie-info">
 
-          <h1 className="movie-title">{movie.title}</h1>
+          <h1 className="movie-title">
+            {movie.title}
+          </h1>
 
           <div className="movie-rating">
             ⭐ {averageRating}
@@ -140,12 +175,25 @@ function MovieDetails() {
           </div>
 
           <div className="rating-stats">
+
             {ratingStats.map((item) => (
-              <div key={item.star} className="rating-row">
-                <span>{"⭐".repeat(item.star)}</span>
-                <span>{item.count}</span>
+
+              <div
+                className="rating-row"
+                key={item.star}
+              >
+                <span>
+                  {"⭐".repeat(item.star)}
+                </span>
+
+                <span>
+                  {item.count}
+                </span>
+
               </div>
+
             ))}
+
           </div>
 
           <div className="movie-meta">
@@ -166,7 +214,9 @@ function MovieDetails() {
 
           <div className="review-section">
 
-            <h3>Write a Review</h3>
+            <h3>
+              Write a Review
+            </h3>
 
             <StarRating
               rating={rating}
@@ -174,10 +224,12 @@ function MovieDetails() {
             />
 
             <textarea
-              placeholder="Write your review..."
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
               rows="5"
+              placeholder="Share your thoughts about this movie..."
+              value={review}
+              onChange={(e) =>
+                setReview(e.target.value)
+              }
             />
 
             <button
@@ -193,22 +245,36 @@ function MovieDetails() {
 
       </div>
 
+      {/* USER REVIEWS */}
+
       <div className="reviews-list">
 
-        <h2>User Reviews</h2>
+        <h2>
+          User Reviews
+        </h2>
 
         {reviews.length === 0 ? (
 
-          <p>No reviews yet.</p>
+          <p
+            style={{
+              color: "white",
+              fontSize: "18px",
+            }}
+          >
+            No reviews yet.
+          </p>
 
         ) : (
 
           reviews.map((item) => (
 
-            <div className="review-card" key={item._id}>
+            <div
+              className="review-card"
+              key={item._id}
+            >
 
               <h3>
-                {item.user?.userName || "Anonymous"}
+                👤 {item.user?.userName || "Anonymous"}
               </h3>
 
               <p className="stars">
@@ -220,13 +286,18 @@ function MovieDetails() {
               </p>
 
               {currentUser?.id === item.user?._id && (
+
                 <button
                   className="delete-btn"
-                  onClick={() => handleDeleteReview(item._id)}
+                  onClick={() =>
+                    handleDeleteReview(item._id)
+                  }
                 >
                   🗑 Delete Review
                 </button>
+
               )}
+
             </div>
 
           ))
@@ -234,10 +305,9 @@ function MovieDetails() {
         )}
 
       </div>
-
+    
     </>
   );
-
 }
 
 export default MovieDetails;
