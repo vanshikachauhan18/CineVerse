@@ -28,6 +28,11 @@ const movieSchema = new mongoose.Schema(
       default: "",
     },
 
+    backdrop: {
+      type: String,
+      default: "",
+    },
+
     imdbRating: {
       type: Number,
       default: 0,

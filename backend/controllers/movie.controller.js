@@ -1,20 +1,23 @@
 import { Movie } from "../models/movie.model.js";
 
-// Add Movie
 export const addMovie = async (req, res) => {
   try {
     const {
       title,
-      description,
       genre,
       releaseYear,
+      description,
       poster,
+      backdrop,
       imdbRating,
       runtime,
     } = req.body;
 
     // Prevent duplicate movies
-    const existingMovie = await Movie.findOne({ title, releaseYear });
+    const existingMovie = await Movie.findOne({
+      title,
+      releaseYear,
+    });
 
     if (existingMovie) {
       return res.status(400).json({
@@ -28,6 +31,7 @@ export const addMovie = async (req, res) => {
       genre,
       releaseYear,
       poster,
+      backdrop,
       imdbRating,
       runtime,
     });
@@ -44,8 +48,7 @@ export const addMovie = async (req, res) => {
       message: error.message,
     });
   }
-};
-
+}; 
 // Get All Movies
 export const getAllMovies = async (req, res) => {
   try {
