@@ -125,7 +125,7 @@ function MovieDetails() {
       <div
         className="movie-banner"
         style={{
-          backgroundImage: `url(${movie.poster})`,
+          backgroundImage: `url(${movie.backdrop || movie.poster})`,
         }}
       >
         <div className="banner-overlay">
@@ -305,7 +305,7 @@ function MovieDetails() {
         )}
 
       </div>
-    
+
     </>
   );
 }
